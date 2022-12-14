@@ -6,13 +6,19 @@ class QueryGeneratorService
 {
     public function generateQuery($params)
     {
-        $query = 'select ' . ($params['is_distinct'] ? 'distinct ' : '');
+        $query = 'select ' . (!empty($params['is_distinct']) ? 'distinct ' : '');
         $query .= implode(',', $params['columns']);
         $query .= ' from ' . $params['table_name'];
-        $query .= ' where 1=1 ';
+        $query .= ' where 1=1';
 
-        if (!empty($params['table_name'])) {
-            $query .= 'and ' . $params['filter'] . ' ' . $params['operator'] . ' \'' . $params['operator_value'] .'\'';
+        if ($params['filter'] && $params['operator'] && $params['operator_value']) {
+            foreach ($params['filter'] as $key => $value) {
+                if ($value && $params['operator'][$key] && $params['operator_value'][$key]) {
+                    $andOr = $params['and_or'][$key-1] ?? 'and';
+                    $query .= ' ' . $andOr . ' ' . $value . ' ' .
+                        $params['operator'][$key] . ' \'' . $params['operator_value'][$key] .'\'';
+                }
+            }
         }
 
         return $query;

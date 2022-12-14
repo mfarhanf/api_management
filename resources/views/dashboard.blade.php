@@ -9,7 +9,3 @@
 @section('content')
 <p>Welcome {{ Auth::user()->name }} to The API Management Application.</p>
 @stop
-
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
