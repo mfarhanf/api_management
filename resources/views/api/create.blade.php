@@ -29,8 +29,6 @@
             @endphp
             <x-adminlte-select2 id="columns" name="columns[]" label="Column"
                 :config="$config" fgroup-class="col-md-6" multiple>
-                <option>id</option>
-                <option>name</option>
             </x-adminlte-select2>
 
             <x-adminlte-input-switch name="is_distinct" data-on-text="YES" data-off-text="NO"
@@ -38,14 +36,12 @@
         </div>
 
         <div class="row filter-section">
-            <x-adminlte-select name="filter[]" label="Filter By" fgroup-class="col-md-4">
-                <x-adminlte-options :options="$columns['products']"
-                    empty-option="Select an option..."/>
+            <x-adminlte-select name="filter[]" label="Filter By" fgroup-class="col-md-4" class="filter">
+                <x-adminlte-options :options="[]" empty-option="Select an option..."/>
             </x-adminlte-select>
 
             <x-adminlte-select name="operator[]" label="&nbsp;" fgroup-class="col-md-4">
-                <x-adminlte-options :options="$operators"
-                    empty-option="Select an option..."/>
+                <x-adminlte-options :options="$operators" empty-option="Select an option..."/>
             </x-adminlte-select>
 
             <x-adminlte-input name="operator_value[]" label="&nbsp;" fgroup-class="col-md-3" disable-feedback/>
@@ -96,6 +92,25 @@
                 $(this).parent().parent().parent().prev().remove();
                 $(this).parent().parent().parent().remove();
             })
+
+            $('#table_name').on('change', function() {
+                var table = {!! json_encode($columns) !!};
+                var columns = {!! json_encode($columns) !!};
+                $('#columns').html('')
+                $('select.filter').html('<option>Select an option...</option>')
+
+                $.each(columns[this.value], function(key, value) {
+                    $('#columns').append($("<option></option>")
+                        .attr("value", key)
+                        .text(value));
+                });
+
+                $.each(columns[this.value], function(key, value) {
+                    $('select.filter').append($("<option></option>")
+                        .attr("value", key)
+                        .text(value));
+                });
+            });
         });
     </script>
 @stop

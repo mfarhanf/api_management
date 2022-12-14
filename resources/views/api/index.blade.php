@@ -28,12 +28,8 @@
             <tr>
                 <td>{!! $row['id'] !!}</td>
                 <td>{!! $row['table_name'] !!}</td>
-                <td><a href="{!! $row['url'] !!}">{!! $row['url'] !!}</a></td>
+                <td><a href="{!! $row['url'] !!}" target="_blank">{!! $row['url'] !!}</a></td>
             </tr>
         @endforeach
     </x-adminlte-datatable>
-@stop
-
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
 @stop

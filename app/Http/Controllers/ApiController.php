@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Arr;
 use App\Models\ApiResult;
+use App\Models\Table;
 use App\Services\QueryGeneratorService;
+use DB;
 
 class ApiController extends Controller
 {
@@ -40,15 +43,12 @@ class ApiController extends Controller
      */
     public function create()
     {
+        $tables = $this->getTableOptions();
+        $columns = $this->getColumnOptions($tables);
+
         $data = [
-            'tables' => [
-                'products' => 'Products',
-                'orders' => 'Orders',
-            ],
-            'columns' => [
-                'products' => ['id' => 'ID', 'name' => 'Name'],
-                'orders' => ['id' => 'ID', 'name' => 'Name'],
-            ],
+            'tables' => $tables,
+            'columns' => $columns,
             'operators' => [
                 '=' => '=',
                 '<' => '<',
@@ -87,48 +87,24 @@ class ApiController extends Controller
         return redirect('api');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    private function getTableOptions()
     {
-        //
+        $tables = Arr::pluck(Auth::user()->tables->toArray(), 'name');
+
+        return transform_array($tables);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    private function getColumnOptions($tables)
     {
-        //
-    }
+        $columnOptions = [];
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        foreach ($tables as $key => $value) {
+            $columns = DB::connection('mysql2')
+                ->getSchemaBuilder()
+                ->getColumnListing($key);
+            $columnOptions[$key] = transform_array($columns);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return $columnOptions;
     }
 }

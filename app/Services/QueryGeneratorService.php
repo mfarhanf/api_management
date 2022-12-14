@@ -7,7 +7,7 @@ class QueryGeneratorService
     public function generateQuery($params)
     {
         $query = 'select ' . (!empty($params['is_distinct']) ? 'distinct ' : '');
-        $query .= implode(',', $params['columns']);
+        $query .= !empty($params['columns']) ? implode(',', $params['columns']) : '*';
         $query .= ' from ' . $params['table_name'];
         $query .= ' where 1=1';
 
