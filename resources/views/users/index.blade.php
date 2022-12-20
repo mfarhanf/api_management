@@ -40,7 +40,7 @@
                         </button>
                         <div class="dropdown-menu" role="menu" style="">
                             <a href="users/edit/{{ $row['id'] }}" class="dropdown-item">Edit User</a>
-                            <a href="users/{{ $row['id'] }}/tables" class="dropdown-item">Edit Table</a>
+                            <a href="users/{{ $row['id'] }}/tables" class="dropdown-item">Access Table</a>
                         </div>
                     </div>
                 </td>
