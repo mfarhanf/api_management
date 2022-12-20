@@ -321,6 +321,16 @@ return [
             'url'         => 'api/create',
             'icon'        => 'nav-icon fas fa-edit',
         ],
+        [
+            'text'        => 'Users',
+            'url'         => 'users',
+            'icon'        => 'nav-icon fas fa-edit',
+        ],
+        [
+            'text'        => 'Tables',
+            'url'         => 'tables',
+            'icon'        => 'nav-icon fas fa-edit',
+        ],
     ],
 
     /*
