@@ -98,7 +98,8 @@ class ApiController extends Controller
 
     private function getTableOptions()
     {
-        $tables = Arr::pluck(Auth::user()->tables->toArray(), 'name');
+        $tables = Gate::allows('isAdmin') ? Table::get() : Auth::user()->tables;
+        $tables = Arr::pluck($tables, 'name');
 
         return transform_array($tables);
     }
