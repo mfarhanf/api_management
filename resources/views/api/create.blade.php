@@ -10,11 +10,11 @@
     <form action="store" method="post">
         @csrf
         <div class="row">
-            <x-adminlte-input name="api_name" label="API Name" fgroup-class="col-md-6" disable-feedback/>
+            <x-adminlte-input name="api_name" label="API Name" fgroup-class="col-md-6" enable-old-support/>
         </div>
 
         <div class="row">
-            <x-adminlte-select name="table_name" label="Table" fgroup-class="col-md-6">
+            <x-adminlte-select name="table_name" label="Table" fgroup-class="col-md-6" enable-old-support>
                 <x-adminlte-options :options="$tables"
                     empty-option="Select an option..."/>
             </x-adminlte-select>
@@ -32,7 +32,7 @@
             </x-adminlte-select2>
 
             <x-adminlte-input-switch name="is_distinct" data-on-text="YES" data-off-text="NO"
-                label="I would like to receive distinct value (unique value)"/>
+                label="I would like to receive distinct value (unique value)" enable-old-support/>
         </div>
 
         <div class="row filter-section">
@@ -44,7 +44,7 @@
                 <x-adminlte-options :options="$operators" empty-option="Select an option..."/>
             </x-adminlte-select>
 
-            <x-adminlte-input name="operator_value[]" label="&nbsp;" fgroup-class="col-md-3" disable-feedback/>
+            <x-adminlte-input name="operator_value[]" label="&nbsp;" fgroup-class="col-md-3"/>
 
             <div class="form-group col-md-1">
                 <label>&nbsp;</label>
@@ -94,7 +94,6 @@
             })
 
             $('#table_name').on('change', function() {
-                var table = {!! json_encode($columns) !!};
                 var columns = {!! json_encode($columns) !!};
                 $('#columns').html('')
                 $('select.filter').html('<option>Select an option...</option>')
@@ -111,6 +110,26 @@
                         .text(value));
                 });
             });
+
+            var table = "{!! old('table_name') ?? 'undefined' !!}";
+
+            if (table != 'undefined') {
+                var columns = {!! json_encode($columns) !!};
+                $('#columns').html('')
+                $('select.filter').html('<option>Select an option...</option>')
+
+                $.each(columns[table], function(key, value) {
+                    $('#columns').append($("<option></option>")
+                        .attr("value", key)
+                        .text(value));
+                });
+
+                $.each(columns[table], function(key, value) {
+                    $('select.filter').append($("<option></option>")
+                        .attr("value", key)
+                        .text(value));
+                });
+            }
         });
     </script>
 @stop

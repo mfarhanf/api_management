@@ -33,3 +33,17 @@
         @endforeach
     </x-adminlte-datatable>
 @stop
+
+@section('js')
+    <script type="text/javascript">
+        $(function() {
+            @if (session()->has('success'))
+                Swal.fire(
+                    "Good job!",
+                    "{{ session('success') }}",
+                    "success"
+                )
+            @endif
+        });
+    </script>
+@stop
