@@ -312,24 +312,14 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'Home',
+            'text'        => 'API',
             'url'         => 'api',
-            'icon'        => 'nav-icon fas fa-home',
-        ],
-        [
-            'text'        => 'Create API',
-            'url'         => 'api/create',
-            'icon'        => 'nav-icon fas fa-edit',
+            'icon'        => 'nav-icon fas fa-bars',
         ],
         [
             'text'        => 'Users',
             'url'         => 'users',
-            'icon'        => 'nav-icon fas fa-edit',
-        ],
-        [
-            'text'        => 'Tables',
-            'url'         => 'tables',
-            'icon'        => 'nav-icon fas fa-edit',
+            'icon'        => 'nav-icon fas fa-users',
         ],
     ],
 

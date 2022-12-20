@@ -22,7 +22,7 @@
     ];
     @endphp
 
-    {{-- Minimal example / fill data using the component slot --}}
+    <a href="api/create" class="btn btn-primary mb-2 float-right">Create API</a>
     <x-adminlte-datatable id="table1" :heads="$heads">
         @foreach($config['data'] as $row)
             <tr>

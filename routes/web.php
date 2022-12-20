@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiGeneratorController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserTableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,15 +35,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/api/store', 'store');
     });
 
-     Route::controller(UserController::class)->group(function () {
+    Route::controller(UserController::class)->group(function () {
         Route::get('/users', 'index');
         Route::get('/users/create', 'create');
-        Route::get('/users/edit/{id}', 'edit');
-        Route::post('/users/edit/{id}', 'edit');
-        Route::post('/users/update/{id}', 'update');
         Route::post('/users/store', 'store');
+        Route::get('/users/edit/{id}', 'edit');
+        Route::put('/users/update/{id}', 'update');
+        Route::get('/users/{id}/tables', 'accessTable');
+        Route::put('/users/{id}/tables', 'updateAccessTable');
     });
-
 });
 
 Route::controller(ApiGeneratorController::class)->group(function () {

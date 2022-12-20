@@ -7,68 +7,77 @@
 @stop
 
 @section('content')
-    <form action="store" method="post">
-        @csrf
-        <div class="row">
-            <x-adminlte-input name="api_name" label="API Name" fgroup-class="col-md-6" enable-old-support/>
-        </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="store" method="post">
+                        @csrf
+                        <div class="row">
+                            <x-adminlte-input name="api_name" label="API Name" fgroup-class="col-md-6" enable-old-support/>
+                        </div>
 
-        <div class="row">
-            <x-adminlte-select name="table_name" label="Table" fgroup-class="col-md-6" enable-old-support>
-                <x-adminlte-options :options="$tables"
-                    empty-option="Select an option..."/>
-            </x-adminlte-select>
-        </div>
+                        <div class="row">
+                            <x-adminlte-select name="table_name" label="Table" fgroup-class="col-md-6" enable-old-support>
+                                <x-adminlte-options :options="$tables"
+                                    empty-option="Select an option..."/>
+                            </x-adminlte-select>
+                        </div>
 
-        <div class="row">
-            @php
-            $config = [
-                "placeholder" => "Select multiple options...",
-                "allowClear" => true,
-            ];
-            @endphp
-            <x-adminlte-select2 id="columns" name="columns[]" label="Column"
-                :config="$config" fgroup-class="col-md-6" multiple>
-            </x-adminlte-select2>
+                        <div class="row">
+                            @php
+                            $config = [
+                                "placeholder" => "Select multiple options...",
+                                "allowClear" => true,
+                            ];
+                            @endphp
+                            <x-adminlte-select2 id="columns" name="columns[]" label="Column"
+                                :config="$config" fgroup-class="col-md-6" multiple>
+                            </x-adminlte-select2>
 
-            <x-adminlte-input-switch name="is_distinct" data-on-text="YES" data-off-text="NO"
-                label="I would like to receive distinct value (unique value)" enable-old-support/>
-        </div>
+                            <x-adminlte-input-switch name="is_distinct" data-on-text="YES" data-off-text="NO"
+                                label="I would like to receive distinct value (unique value)" enable-old-support/>
+                        </div>
 
-        <div class="row filter-section">
-            <x-adminlte-select name="filter[]" label="Filter By" fgroup-class="col-md-4" class="filter">
-                <x-adminlte-options :options="[]" empty-option="Select an option..."/>
-            </x-adminlte-select>
+                        <div class="row filter-section">
+                            <x-adminlte-select name="filter[]" label="Filter By" fgroup-class="col-md-4" class="filter">
+                                <x-adminlte-options :options="[]" empty-option="Select an option..."/>
+                            </x-adminlte-select>
 
-            <x-adminlte-select name="operator[]" label="&nbsp;" fgroup-class="col-md-4">
-                <x-adminlte-options :options="$operators" empty-option="Select an option..."/>
-            </x-adminlte-select>
+                            <x-adminlte-select name="operator[]" label="&nbsp;" fgroup-class="col-md-4">
+                                <x-adminlte-options :options="$operators" empty-option="Select an option..."/>
+                            </x-adminlte-select>
 
-            <x-adminlte-input name="operator_value[]" label="&nbsp;" fgroup-class="col-md-3"/>
+                            <x-adminlte-input name="operator_value[]" label="&nbsp;" fgroup-class="col-md-3"/>
 
-            <div class="form-group col-md-1">
-                <label>&nbsp;</label>
-                <div class="input-group">
-                    <x-adminlte-button type="button" class="delete" theme="danger" icon="fas fa-lg fa-minus" disabled/>
+                            <div class="form-group col-md-1">
+                                <label>&nbsp;</label>
+                                <div class="input-group">
+                                    <x-adminlte-button type="button" class="delete" theme="danger" icon="fas fa-lg fa-minus" disabled/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row and-or-section" style="display: none;">
+                            <x-adminlte-select name="and_or[]" fgroup-class="col-md-1">
+                                <x-adminlte-options :options="['and' => 'AND', 'or' => 'OR']"/>
+                            </x-adminlte-select>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-11">
+                                <x-adminlte-button type="submit" label="Submit" theme="success" icon="fas fa-lg fa-save"/>
+                                <a href="/api" class="btn btn-default">Cancel</a>
+                            </div>
+                            <div class="form-group col-md-1">
+                                <x-adminlte-button type="button" class="add" theme="success" icon="fas fa-lg fa-plus"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="row and-or-section" style="display: none;">
-            <x-adminlte-select name="and_or[]" fgroup-class="col-md-1">
-                <x-adminlte-options :options="['and' => 'AND', 'or' => 'OR']"/>
-            </x-adminlte-select>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-11">
-                <x-adminlte-button type="submit" label="Submit" theme="success" icon="fas fa-lg fa-save"/>
-            </div>
-            <div class="form-group col-md-1">
-                <x-adminlte-button type="button" class="add" theme="success" icon="fas fa-lg fa-plus"/>
-            </div>
-        </div>
-    </form>
+    </div>
 @stop
 
 @section('js')

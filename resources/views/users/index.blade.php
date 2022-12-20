@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'API List')
+@section('title', 'User List')
 
 @section('content_header')
-    <h1>API List</h1>
+    <h1>User List</h1>
 @stop
 
 @section('content')
@@ -11,8 +11,10 @@
     @php
     $heads = [
         'ID',
-        'API Name',
-        'URL',
+        'Name',
+        'Email',
+        'Tables',
+        '',
     ];
 
     $config = [
@@ -22,26 +24,41 @@
     ];
     @endphp
 
-    {{-- Minimal example / fill data using the component slot --}}
+    <a href="users/create" class="btn btn-primary mb-2 float-right">Create User</a>
     <x-adminlte-datatable id="table1" :heads="$heads">
-     <a href="users/create" class="btn btn-primary mb-2">
-                        Tambah
-                    </a>
         @foreach($config['data'] as $row)
             <tr>
                 <td>{!! $row['id'] !!}</td>
                 <td>{!! $row['name'] !!}</td>
                 <td>{!! $row['email'] !!}</td>
+                <td>{!! $row['table_list'] !!}</td>
                 <td>
-                                    <a href="users/edit/{{$row['id']}}" class="btn btn-primary btn-xs">
-                                        Edit
-                                    </a>
-                                    </td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Action</button>
+                        <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a href="users/edit/{{ $row['id'] }}" class="dropdown-item">Edit User</a>
+                            <a href="users/{{ $row['id'] }}/tables" class="dropdown-item">Edit Table</a>
+                        </div>
+                    </div>
+                </td>
             </tr>
         @endforeach
     </x-adminlte-datatable>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+@section('js')
+    <script type="text/javascript">
+        $(function() {
+            @if (session()->has('success'))
+                Swal.fire(
+                    "Good job!",
+                    "{{ session('success') }}",
+                    "success"
+                )
+            @endif
+        });
+    </script>
 @stop

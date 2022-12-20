@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\URL;
-use App\Models\ApiResult;
+use App\Models\Table;
 use App\Models\User;
-use App\Services\QueryGeneratorService;
+use App\Models\UserTable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Arr;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -19,11 +19,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        
-        $userId = Auth::id();
-        $data = User::select(['id', 'name', 'email'])
-            ->get()
-            ->toArray();
+        $data = User::get();
+
+        foreach ($data as &$user) {
+            $user->table_list = implode(', ', Arr::pluck($user->tables, 'name'));
+        }
 
         return view('users.index', ['data' => $data]);
     }
@@ -47,31 +47,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
-        'name' => 'required',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|confirmed'
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed'
         ]);
+
         $array = $request->only([
             'name', 'email', 'password'
         ]);
+
         $array['password'] = Hash::make($array['password']);
         $user = User::create($array);
 
-        //return back()->with('success_message','Berhasil menambah user baru');
-        return redirect('users')->with('success_message', 'Berhasil menambah user baru');
+        return redirect('users')->with('success_message', 'Data successfully saved');
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -82,12 +72,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-         $user = User::find($id);
-            if (!$user) return redirect()->route('users.index')
-                ->with('error_message', 'User dengan id'.$id.' tidak ditemukan');
-            return view('users.edit', [
-                'user' => $user
-            ]);
+        $user = User::find($id);
+
+        if (!$user) return redirect()->route('users.index')
+            ->with('error_message', 'User with id ' . $id . ' not found');
+
+        return view('users.edit', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -99,39 +91,58 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $request->validate([
-        'name' => 'required',
-        'email' => 'required|email,email',
-        'password' => 'required|confirmed'
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'password' => 'required|confirmed'
         ]);
+
         $array = $request->only([
             'name', 'email', 'password'
         ]);
         $array['password'] = Hash::make($array['password']);
-        //$user = User::create($array);
-
-        $user->save();
-            return redirect('users')->with('success_message', 'Berhasil mengubah user');
 
         $user = User::find($id);
-        // Getting values from the blade template form
         $user->name =  $request->get('name');
         $user->email = $request->get('email');
-        $user->password =  $array['password'] ;
-        $stock->save();
+        $user->password = $array['password'] ;
+        $user->save();
  
-        return redirect('/users')->with('success', 'Berhasil mengubah user!'); // -> resources/views/stocks/index.blade.php
-
+        return redirect('/users')->with('success', 'Data successfully updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function accessTable($id)
     {
-        //
+        $user = User::find($id);
+        $tables = Table::get();
+
+        $user->table_list = Arr::pluck($user->tables, 'name');
+
+        return view('users.access-table', ['user' => $user, 'tables' => $tables]);
+    }
+
+    public function updateAccessTable(Request $request, $id)
+    {
+        $request->validate([
+            'table_id' => 'required'
+        ]);
+
+        $data = [];
+        $params = $request->all();
+        $now = Carbon::now()->toDateTimeString();
+
+        foreach ($params['tables'] as $tableId) {
+            $data[] = [
+                'user_id' => $id,
+                'table_id' => $tableId,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+
+        UserTable::where('user_id', $id)->delete();
+        UserTable::insert($data);
+
+        return redirect('/users')->with('success', 'Data successfully updated');
     }
 }
