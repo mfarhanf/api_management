@@ -15,6 +15,10 @@
         'URL',
     ];
 
+    if (Gate::allows('isAdmin')) {
+        $heads[] = 'Created By';
+    }
+
     $config = [
         'data' => $data,
         'order' => [[1, 'asc']],
@@ -29,6 +33,10 @@
                 <td>{!! $row['id'] !!}</td>
                 <td>{!! $row['table_name'] !!}</td>
                 <td><a href="{!! $row['url'] !!}" target="_blank">{!! $row['url'] !!}</a></td>
+
+                @if (Gate::allows('isAdmin'))
+                <td>{!! $row->user->name !!}</td>
+                @endif
             </tr>
         @endforeach
     </x-adminlte-datatable>

@@ -18,7 +18,7 @@
             ];
             @endphp
             <x-adminlte-select2 id="tables" name="tables[]" label="Tables"
-                :config="$config" fgroup-class="col-md-6" multiple error-key='table_id'>
+                :config="$config" fgroup-class="col-md-6" multiple error-key='tables'>
                 @foreach ($tables as $table)
                     <option {!! (in_array($table->name, $user->table_list) ? 'selected' : '') !!}
                         value="{!! $table->id !!}">{!! $table->name !!}</option>

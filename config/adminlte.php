@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'API Management',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -107,7 +107,7 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
+        'enabled' => false,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'AdminLTE Preloader Image',
@@ -294,11 +294,11 @@ return [
         [
             'type'         => 'navbar-search',
             'text'         => 'search',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
         [
             'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
 
         // Sidebar items:
@@ -312,14 +312,15 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'API',
-            'url'         => 'api',
-            'icon'        => 'nav-icon fas fa-bars',
+            'text'  => 'API',
+            'url'   => 'api',
+            'icon'  => 'nav-icon fas fa-bars',
         ],
         [
-            'text'        => 'Users',
-            'url'         => 'users',
-            'icon'        => 'nav-icon fas fa-users',
+            'text'  => 'Users',
+            'url'   => 'users',
+            'icon'  => 'nav-icon fas fa-users',
+            'can'   => 'isAdmin',
         ],
     ],
 

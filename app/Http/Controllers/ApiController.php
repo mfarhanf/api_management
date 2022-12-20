@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use App\Models\ApiResult;
 use App\Models\Table;
 use App\Services\QueryGeneratorService;
+use Illuminate\Support\Facades\Gate;
 use DB;
 
 class ApiController extends Controller
@@ -20,11 +21,14 @@ class ApiController extends Controller
      */
     public function index()
     {
-        $userId = Auth::id();
-        $data = ApiResult::select(['id', 'api_name', 'table_name'])
-            ->where('created_by', $userId)
-            ->get()
-            ->toArray();
+        $data = ApiResult::select(['id', 'api_name', 'table_name', 'created_by']);
+
+        if (Gate::allows('isUser')) {
+            $userId = Auth::id();
+            $data->where('created_by', $userId);
+        }
+
+        $data = $data->get();
 
         if ($data) {
             foreach ($data as $key => $value) {

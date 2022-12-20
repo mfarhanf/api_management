@@ -124,7 +124,7 @@ class UserController extends Controller
     public function updateAccessTable(Request $request, $id)
     {
         $request->validate([
-            'table_id' => 'required'
+            'tables' => 'required'
         ]);
 
         $data = [];
