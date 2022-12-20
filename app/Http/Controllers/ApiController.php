@@ -69,6 +69,11 @@ class ApiController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'api_name' => 'required',
+            'table_name' => 'required',
+        ]);
+
         $params = $request->all();
         $userId = Auth::id();
 
@@ -84,7 +89,7 @@ class ApiController extends Controller
         ];
 
         ApiResult::create($data);
-        return redirect('api');
+        return redirect('api')->with(['success' => 'Data successfully saved']);
     }
 
     private function getTableOptions()
