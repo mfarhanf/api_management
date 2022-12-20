@@ -112,6 +112,16 @@ class UserController extends Controller
 
         $user->save();
             return redirect('users')->with('success_message', 'Berhasil mengubah user');
+
+        $user = User::find($id);
+        // Getting values from the blade template form
+        $user->name =  $request->get('name');
+        $user->email = $request->get('email');
+        $user->password =  $array['password'] ;
+        $stock->save();
+ 
+        return redirect('/users')->with('success', 'Berhasil mengubah user!'); // -> resources/views/stocks/index.blade.php
+
     }
 
     /**

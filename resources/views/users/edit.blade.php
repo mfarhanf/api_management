@@ -4,7 +4,7 @@
     <h1 class="m-0 text-dark">Edit User</h1>
 @stop
 @section('content')
-    <form action="/users/update" method="post">
+    <form action="{{'/users/update/'. $user->id }}" method="post">
       
     <div class="row">
         <div class="col-12">

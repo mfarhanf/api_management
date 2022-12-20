@@ -21,8 +21,6 @@ require __DIR__.'/auth.php';
 Auth::routes();
 
 Route::redirect('/', '/login');
-Route::resource('users', \App\Http\Controllers\UserController::class)
-    ->middleware('auth');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -40,7 +38,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users', 'index');
         Route::get('/users/create', 'create');
         Route::get('/users/edit/{id}', 'edit');
-        Route::post('/users/update', 'update');
+        Route::post('/users/edit/{id}', 'edit');
+        Route::post('/users/update/{id}', 'update');
         Route::post('/users/store', 'store');
     });
 
